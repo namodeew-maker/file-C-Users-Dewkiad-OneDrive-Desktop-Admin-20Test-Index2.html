@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced System Admin Test (Online)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ... (Style เดิมทั้งหมด คงไว้เหมือนเดิม) ... */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            --primary-color: #2563eb;
+            --success-color: #10b981;
+            --success-bg: #d1fae5;
+            --error-color: #ef4444;
+            --error-bg: #fee2e2;
+            --text-main: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+        }
+
+        h1, h2, h3, .btn-text {
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-gradient);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .user-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Content Body */
+        .content-body {
+            padding: 30px;
+        }
+
+        /* Login Section */
+        #login-section {
+            text-align: center;
+        }
+
+        .login-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Quiz Section */
+        #quiz-section {
+            display: none;
+        }
+
+        .progress-area {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #111;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #fff;
+            border: 2px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Sarabun', sans-serif;
+            position: relative;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary-color);
+            background: #f8fafc;
+        }
+
+        .option-btn.correct {
+            border-color: var(--success-color);
+            background: var(--success-bg);
+            color: #065f46;
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--error-color);
+            background: var(--error-bg);
+            color: #991b1b;
+        }
+
+        /* Feedback Box */
+        .feedback-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-box.correct {
+            background: var(--success-bg);
+            border: 1px solid var(--success-color);
+        }
+
+        .feedback-box.incorrect {
+            background: var(--error-bg);
+            border: 1px solid var(--error-color);
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .feedback-correct-text { color: var(--success-color); }
+        .feedback-incorrect-text { color: var(--error-color); }
+
+        .explanation-text {
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        .next-btn {
+            margin-top: 20px;
+            background: var(--primary-gradient);
+            display: none;
+        }
+
+        /* Result Section */
+        #result-section {
+            display: none;
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .result-message {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .result-detail {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+        
+        #save-status {
+            font-size: 14px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <h1>Admin Standard Test</h1>
+        <p>วัดวิธีคิด การตัดสินใจ และการคุมความเสี่ยง (เก็บข้อมูล)</p>
+        <div class="user-badge" id="user-badge">
+            👤 <span id="display-name">Guest</span>
+        </div>
+    </div>
+
+    <div class="content-body">
+        
+        <div id="login-section">
+            <div class="login-icon">📝</div>
+            <h2 style="margin-bottom: 5px;">ลงทะเบียนเข้าทดสอบ</h2>
+            <p style="color: #666; margin-bottom: 30px;">กรุณากรอกข้อมูลเพื่อเริ่มทำแบบทดสอบ</p>
+
+            <div class="input-group">
+                <label>ชื่อ - นามสกุล</label>
+                <input type="text" id="username" placeholder="ระบุชื่อของคุณ...">
+            </div>
+            <div class="input-group">
+                <label>ตำแหน่ง</label>
+                <input type="text" id="position" placeholder="เช่น Admin, CS...">
+            </div>
+
+            <button class="btn-primary" onclick="startQuiz()">เริ่มทำแบบทดสอบ ▶</button>
+        </div>
+
+        <div id="quiz-section">
+            <div class="progress-area">
+                <span>ข้อที่ <span id="current-q-num">1</span> / <span id="total-q-num">33</span></span>
+                <span id="score-tracker" style="color: var(--primary-color); font-weight: bold;">คะแนน: 0</span>
+            </div>
+
+            <div class="question-text" id="question-text">Loading...</div>
+            <div class="options-list" id="options-container"></div>
+
+            <div id="feedback-area" class="feedback-box">
+                <div class="feedback-title" id="feedback-title"></div>
+                <div class="explanation-text" id="feedback-explanation"></div>
+            </div>
+
+            <button class="btn-primary next-btn" id="next-btn" onclick="nextQuestion()">ข้อต่อไป ➜</button>
+        </div>
+
+        <div id="result-section">
+            <div class="score-circle" id="final-score">0</div>
+            <div class="result-message" id="result-msg">ยอดเยี่ยม!</div>
+            <p class="result-detail" id="result-desc">คุณทำคะแนนได้ดีมาก</p>
+            
+            <div style="background: #f9fafb; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left;">
+                <p style="margin:5px 0;"><strong>ผู้สอบ:</strong> <span id="end-name">-</span></p>
+                <p style="margin:5px 0;"><strong>ตำแหน่ง:</strong> <span id="end-position">-</span></p>
+                <div id="save-status" style="color: #666; text-align: center; margin-top:15px;">กำลังรอผลการบันทึก...</div>
+            </div>
+
+            <button class="btn-primary" onclick="location.reload()">↺ เริ่มต้นใหม่</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // 🔴 ใส่ URL ของ Google Apps Script ตรงนี้ 🔴
+    // ==========================================
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0XgCe7F8jlx8q7CGEgZERYVdNP3zBuZ6rjgmlQIhbiivWq_1oAJF-7X0vzDixDaZg2g/exec"; 
+
+
+    // Database
+    const quizData = [
+        { q: "1. บทบาทที่แท้จริงของแอดมินตามชีทนี้คือข้อใด", options: ["ก. ผู้ตอบแชทให้เร็วที่สุด", "ข. ผู้ปิดการขายให้ได้มากที่สุด", "ค. ผู้ดูแลประสบการณ์ลูกค้าและเสถียรภาพของระบบ", "ง. ผู้รับแรงกดดันแทนทีมทั้งหมด"], correct: 2, explain: "แอดมินคือ Customer Experience Manager" },
+        { q: "2. ข้อใด 'ไม่ใช่' หน้าที่ของแอดมินตามนิยามใหม่", options: ["ก. คุมทิศทางบทสนทนา", "ข. รักษามาตรฐานเดียวกันทั้งทีม", "ค. แก้ปัญหาเฉพาะหน้าแบบวันต่อวันตามอารมณ์ลูกค้า", "ง. ลดความเสี่ยงดราม่าในอนาคต"], correct: 2, explain: "การแก้เฉพาะหน้าโดยไม่คิดถึงระบบ คือรากของปัญหาซ้ำ" },
+        { q: "3. เหตุใด 'ลูกค้าถามซ้ำ' จึงถือเป็นปัญหาของระบบ", options: ["ก. ลูกค้าจำไม่ดี", "ข. แอดมินตอบไม่ชัด", "ค. ระบบอธิบายไม่รัดกุมตั้งแต่ต้น", "ง. ลูกค้าตั้งใจหาเรื่อง"], correct: 2, explain: "ปัญหาที่เกิดซ้ำ = ความผิดพลาดของระบบ" },
+        { q: "4. ก่อนกดส่งข้อความ แอดมินต้องถามตัวเองว่า 'ถ้าแคปแชทนี้ถูกส่งต่อ จะกระทบใครบ้าง' เพื่ออะไร", options: ["ก. เพื่อกลัวลูกค้า", "ข. เพื่อไม่ให้โดนด่า", "ค. เพื่อคิดแบบระบบและภาพลักษณ์แบรนด์", "ง. เพื่อให้ตอบช้าลง"], correct: 2, explain: "ทุกแชทคือหลักฐาน" },
+        { q: "5. ลำดับโครงสร้างการสื่อสารที่ถูกต้องคือข้อใด", options: ["ก. อธิบาย – ปฏิเสธ – รับอารมณ์ – จบ", "ข. รับอารมณ์ – อธิบาย – เสนอทางเลือก – ดูแลต่อ", "ค. เสนอขาย – อธิบาย – ปิด", "ง. ปฏิเสธ – ชี้แจง – เถียง"], correct: 1, explain: "สร้างความมั่นคงให้ลูกค้าก่อน" },
+        { q: "6. เหตุใดจึงห้าม 'ใช้เหตุผลก่อนอารมณ์'", options: ["ก. เพราะลูกค้าไม่ชอบเหตุผล", "ข. เพราะจะดูเถียง", "ค. เพราะอารมณ์ที่ไม่ได้รับการรับฟังจะต้านเหตุผลทันที", "ง. เพราะเสียเวลา"], correct: 2, explain: "อารมณ์ต้องถูกดูดซับก่อนเหตุผลจะทำงาน" },
+        { q: "7. ลูกค้าขอสิทธิ์พิเศษโดยอ้างว่าเป็นลูกค้าประจำ สิ่งแรกที่แอดมินควรทำคืออะไร", options: ["ก. ปฏิเสธทันที", "ข. รับปากก่อน", "ค. รับรู้ความต้องการและยืนยันกรอบระบบ", "ง. โยนให้หัวหน้าตอบ"], correct: 2, explain: "ยืนยันระบบก่อนเสนอทางเลือก" },
+        { q: "8. คำตอบใด 'สร้าง precedent ผิดระบบ'", options: ["ก. “ขออธิบายเงื่อนไขก่อนนะคะ”", "ข. “เดี๋ยวลองดูให้เป็นกรณีพิเศษนะคะ”", "ค. “มีแพ็กเกจอื่นที่เหมาะกว่านี้ค่ะ”", "ง. “ขอสรุปทางเลือกให้ค่ะ”"], correct: 1, explain: "ห้ามเปิดช่องพิเศษ (Precedent) ที่ทำลายมาตรฐาน" },
+        { q: "9. เมื่อลูกค้าไม่พอใจหลังใช้บริการ สิ่งใด 'ห้ามทำเด็ดขาด'", options: ["ก. ขอรายละเอียด", "ข. รับฟัง", "ค. ปกป้องน้องทันที", "ง. รับเรื่องในนามระบบ"], correct: 2, explain: "ปกป้องความยุติธรรมของระบบก่อนตัวบุคคล" },
+        { q: "10. เหตุใดการพูดว่า 'ลูกค้าคนอื่นไม่เคยมีปัญหา' จึงผิด", options: ["ก. ไม่สุภาพ", "ข. ไม่จริง", "ค. เป็นการปฏิเสธความรู้สึกลูกค้า", "ง. ไม่ช่วยปิดการขาย"], correct: 2, explain: "เป็นการผลักภาระให้ลูกค้าผิด" },
+        { q: "11. ลูกค้าอารมณ์แรง แต่มีศักยภาพปิดดีล สิ่งที่แอดมินควรทำคือ", options: ["ก. ตอบสั้นเพื่อตัดบท", "ข. เงียบใส่", "ค. ดึงกลับสู่เป้าหมายและเสนอทางเลือกในระบบ", "ง. โต้เพื่อรักษาศักดิ์ศรี"], correct: 2, explain: "โฟกัสที่ทางออก (Solution) ไม่ใช่ที่อารมณ์" },
+        { q: "12. 'ลูกค้าแรง ≠ ลูกค้าไม่ดี' สื่อถึงอะไร", options: ["ก. ต้องทนให้ได้", "ข. ต้องตามใจ", "ค. ลูกค้ามักกลัวไม่คุ้มและต้องการความมั่นใจ", "ง. ต้องรีบปิด"], correct: 2, explain: "เขาแค่กังวลและต้องการความมั่นใจ" },
+        { q: "13. ลูกค้าขู่จะโพสต์ประจาน สิ่งแรกที่ควรทำคือ", options: ["ก. ขู่กลับ", "ข. อธิบายยาว", "ค. ดึงบทสนทนากลับสู่การแก้ปัญหา", "ง. โยนฝ่ายกฎหมาย"], correct: 2, explain: "อย่าตื่นตระหนก ให้ Solution Focus" },
+        { q: "14. เหตุใดต้อง 'หยุดตอบ 1–3 นาที' ในเคสวิกฤต", options: ["ก. ให้ลูกค้ารอ", "ข. ตั้งสติและไม่ตอบตามอารมณ์", "ค. เพื่อให้ดูมีอำนาจ", "ง. รอคำสั่ง"], correct: 1, explain: "กรองอารมณ์ออกจากเหตุผลก่อนพิมพ์" },
+        { q: "15. คำพูดใดตั้งขอบเขตอย่างมืออาชีพ", options: ["ก. “พี่พูดแรงไปนะคะ”", "ข. “ขอคุยกันด้วยถ้อยคำสุภาพเพื่อให้ช่วยได้จริงค่ะ”", "ค. “อย่าพูดแบบนี้”", "ง. “ถ้าไม่หยุดจะไม่ตอบ”"], correct: 1, explain: "เตือนอย่างสุภาพและมีเป้าหมายเพื่อช่วย" },
+        { q: "16. เหตุใดต้อง 'หนึ่งเสียง = หนึ่งมาตรฐาน'", options: ["ก. เพื่อความเร็ว", "ข. เพื่อไม่ให้ลูกค้าสับสนและเห็นรอยรั่วระบบ", "ค. เพื่อควบคุมแอดมิน", "ง. เพื่อความง่าย"], correct: 1, explain: "ปิดช่องโหว่การต่อรอง" },
+        { q: "17. การขายในมุมมองระบบคืออะไร", options: ["ก. การเร่งปิด", "ข. การโน้มน้าว", "ค. การจัดวางทางเลือกที่เหมาะสม", "ง. การลดราคา"], correct: 2, explain: "นำเสนอ Solution ที่ดีที่สุด" },
+        { q: "18. คำพูดใดสอดคล้อง System Selling มากที่สุด", options: ["ก. “รีบตัดสินใจนะคะ”", "ข. “แพ็กนี้ขายดีที่สุด”", "ค. “ถ้าพี่ยังอยากดูเพิ่ม แอดจัดให้ได้ ไม่รีบค่ะ”", "ง. “ราคานี้คุ้มที่สุดแล้ว”"], correct: 2, explain: "สร้าง Trust ดีกว่า Pressure" },
+        { q: "19. การอธิบายเงื่อนไขล่วงหน้าช่วยอะไร", options: ["ก. ลดเวลาแชท", "ข. กันปัญหาก่อนเกิด", "ค. เพิ่มยอดขายทันที", "ง. ทำให้ดูเข้มงวด"], correct: 1, explain: "Preventive Action ดีกว่า Corrective Action" },
+        { q: "20. วัฒนธรรม 'ไม่มีคำว่าลูกค้าเรื่องมาก' หมายถึง", options: ["ก. ต้องทน", "ข. ต้องตามใจ", "ค. ต้องมองว่าระบบต้องปรับตรงไหน", "ง. ต้องโทษแอดมิน"], correct: 2, explain: "เปลี่ยนจากบ่นลูกค้า เป็นพัฒนาระบบ" },
+        { q: "21. แอดมินที่คิดเพื่อระบบจะได้อะไร", options: ["ก. งานหนักขึ้น", "ข. ระบบจะปกป้องเขาเองในระยะยาว", "ค. ลูกค้าชอบ", "ง. ตอบน้อยลง"], correct: 1, explain: "ระบบรับผิดชอบ ไม่ใช่ตัวบุคคล" },
+        { q: "22. ข้อสอบชุดนี้วัดอะไรเป็นหลัก", options: ["ก. ความจำ", "ข. ความเร็ว", "ค. วิธีคิดและการตัดสินใจภายใต้ความกดดัน", "ง. ความสามารถขาย"], correct: 2, explain: "วัด Mindset มากกว่า Skillset" },
+        { q: "23. Case Study ใช้เพื่ออะไร", options: ["ก. จับผิด", "ข. ลงโทษ", "ค. ฝึกคิดเชิงระบบจากสถานการณ์จริง", "ง. สอบให้ยาก"], correct: 2, explain: "เรียนรู้จากอดีตเพื่อไม่ให้เกิดซ้ำ" },
+        { q: "24. เมื่อดราม่าภายในรั่ว สิ่งที่ห้ามพูดคือ", options: ["ก. “ขอสรุปคำตอบกลางนะคะ”", "ข. “ขออภัยในความสับสน”", "ค. “อีกคนพิมพ์ผิดค่ะ”", "ง. “ขอชี้แจงให้ตรงกันค่ะ”"], correct: 2, explain: "ห้ามโทษกันเองให้ลูกค้าเห็น" },
+        { q: "25. SOP 1–2–3 คืออะไร", options: ["ก. รับเรื่อง – โยนต่อ – จบ", "ข. รับอารมณ์ – คุมระบบ – ปิดอย่างปลอดภัย", "ค. ฟัง – ขาย – ปิด", "ง. รับผิด – แก้ – จบ"], correct: 1, explain: "โครงสร้างมาตรฐานจัดการปัญหา" },
+        { q: "26. เหตุใดความนิ่งจึงถือเป็นอำนาจ", options: ["ก. เพราะดูดุ", "ข. เพราะลูกค้ากลัว", "ค. เพราะแสดงความเป็นมืออาชีพและคุมสถานการณ์ได้", "ง. เพราะไม่ต้องตอบเยอะ"], correct: 2, explain: "Emotional Control = Power" },
+        { q: "27. แอดมินที่ดีไม่จำเป็นต้องเป็นคนที่…", options: ["ก. ลูกค้าชอบที่สุด", "ข. คุมระบบได้", "ค. สื่อสารชัด", "ง. ลดดราม่าได้"], correct: 0, explain: "Respect > Like" },
+        { q: "28. เมื่อใดควรส่งต่อหัวหน้าระบบ", options: ["ก. ลูกค้าถามเยอะ", "ข. ลูกค้าไม่ซื้อ", "ค. ลูกค้าไม่หยุดใช้ถ้อยคำรุนแรงหลังตั้งขอบเขตแล้ว", "ง. ลูกค้าต่อราคา"], correct: 2, explain: "Escalation Trigger" },
+        { q: "29. Checklist 'ช่วยลดไฟ หรือเติมไฟ' ใช้เพื่ออะไร", options: ["ก. วัดอารมณ์ลูกค้า", "ข. วัดความยาวข้อความ", "ค. ประเมินผลกระทบเชิงระบบก่อนส่ง", "ง. เช็กภาษา"], correct: 2, explain: "ป้องกันการสาดน้ำมันเข้ากองไฟ" },
+        { q: "30. สาระสำคัญที่สุดของชีทนี้คืออะไร", options: ["ก. ทำให้แอดมินตอบเก่ง", "ข. ทำให้สอบผ่าน", "ค. ทำให้ระบบเดินได้โดยไม่พัง", "ง. ทำให้ขายได้มากขึ้นทันที"], correct: 2, explain: "Sustainability ของระบบ" },
+        { q: "31. สถานการณ์ใดที่ 'แอดมินควรเลือกไม่ปิดการขาย' มากที่สุด", options: ["ก. ลูกค้าต่อราคา", "ข. ลูกค้าขอคิดก่อน", "ค. ลูกค้าแสดงพฤติกรรมเสี่ยงต่อดราม่าและไม่เคารพขอบเขตระบบ", "ง. ลูกค้าถามรายละเอียดเยอะ"], correct: 2, explain: "เงินระยะสั้นไม่คุ้มความเสียหายระยะยาว" },
+        { q: "32. ปัญหาแบบใดที่ 'ไม่ควรรีบแก้ทันที' แต่ควรหยุดและประเมินก่อน", options: ["ก. ลูกค้าสับสนเรื่องแพ็กเกจ", "ข. ลูกค้าอารมณ์แรงและพิมพ์ต่อเนื่อง", "ค. ปัญหาที่การแก้อาจสร้าง precedent ใหม่ให้ระบบเสีย", "ง. ลูกค้าถามเงื่อนไขซ้ำ"], correct: 2, explain: "แก้เร็วอาจเปิดช่องปัญหาใหญ่กว่า" },
+        { q: "33. เหตุใดการทำตามระบบจึง 'ช่วยรายได้แอดมินในระยะยาว'", options: ["ก. ระบบทำให้ลูกค้าซื้อแพงขึ้น", "ข. ระบบทำให้แอดมินตอบน้อยลง", "ค. ระบบลดปัญหา ดราม่า และทำให้ลูกค้ากลับมาใช้ซ้ำ", "ง. ระบบทำให้แอดมินดูมีอำนาจ"], correct: 2, explain: "รายได้มั่นคงมาจากลูกค้าที่เชื่อใจ" }
+    ];
+
+    let currentQIndex = 0;
+    let score = 0;
+    let userName = "";
+    let userPos = "";
+
+    function startQuiz() {
+        userName = document.getElementById('username').value.trim();
+        userPos = document.getElementById('position').value.trim();
+
+        if (!userName) {
+            alert('กรุณากรอกชื่อของคุณก่อนเริ่มครับ');
+            return;
+        }
+
+        document.getElementById('display-name').innerText = userName;
+        document.getElementById('user-badge').style.display = 'flex';
+        
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('quiz-section').style.display = 'block';
+        
+        loadQuestion(0);
+    }
+
+    // Fisher-Yates Shuffle
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function loadQuestion(index) {
+        currentQIndex = index;
+        const qData = quizData[index];
+        
+        document.getElementById('current-q-num').innerText = index + 1;
+        document.getElementById('total-q-num').innerText = quizData.length;
+        document.getElementById('question-text').innerText = qData.q;
+        
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = ''; 
+
+        // Clean & Shuffle
+        let optionsObj = qData.options.map((opt, i) => {
+            const cleanText = opt.replace(/^[ก-ฮ]\.\s*/, '');
+            return { text: cleanText, isCorrect: (i === qData.correct) };
+        });
+        shuffleArray(optionsObj);
+
+        document.getElementById('feedback-area').style.display = 'none';
+        document.getElementById('feedback-area').classList.remove('correct', 'incorrect');
+        document.getElementById('next-btn').style.display = 'none';
+
+        optionsObj.forEach((optObj) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = optObj.text;
+            btn.dataset.isCorrect = optObj.isCorrect;
+            btn.onclick = () => checkAnswer(optObj.isCorrect, btn);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(isCorrect, btnElement) {
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        if (isCorrect) {
+            btnElement.classList.add('correct');
+            score++;
+            document.getElementById('score-tracker').innerText = `คะแนน: ${score}`;
+        } else {
+            btnElement.classList.add('incorrect');
+            allBtns.forEach(b => {
+                if (b.dataset.isCorrect === 'true') b.classList.add('correct');
+            });
+        }
+
+        const feedbackBox = document.getElementById('feedback-area');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackExplain = document.getElementById('feedback-explanation');
+        
+        feedbackBox.style.display = 'block';
+        if (isCorrect) {
+            feedbackBox.classList.add('correct');
+            feedbackTitle.innerHTML = '<span class="feedback-correct-text">✔ ถูกต้อง!</span>';
+        } else {
+            feedbackBox.classList.add('incorrect');
+            feedbackTitle.innerHTML = '<span class="feedback-incorrect-text">✖ ผิดครับ</span>';
+        }
+        
+        feedbackExplain.innerText = quizData[currentQIndex].explain || "";
+
+        const nextBtn = document.getElementById('next-btn');
+        nextBtn.style.display = 'block';
+        
+        if (currentQIndex === quizData.length - 1) {
+            nextBtn.innerText = "ดูผลคะแนน 🏆";
+            nextBtn.onclick = showResult;
+        } else {
+            nextBtn.innerText = "ข้อต่อไป ➜";
+            nextBtn.onclick = nextQuestion;
+        }
+    }
+
+    function nextQuestion() {
+        loadQuestion(currentQIndex + 1);
+    }
+
+    function showResult() {
+        document.getElementById('quiz-section').style.display = 'none';
+        document.getElementById('result-section').style.display = 'block';
+        
+        document.getElementById('final-score').innerText = `${score}`;
+        document.getElementById('end-name').innerText = userName;
+        document.getElementById('end-position').innerText = userPos || "-";
+
+        const percentage = (score / quizData.length) * 100;
+        const resultMsg = document.getElementById('result-msg');
+        const resultDesc = document.getElementById('result-desc');
+        let resultText = "";
+
+        if (percentage >= 80) {
+            resultMsg.innerText = "สุดยอด! (Advanced Admin)";
+            resultMsg.style.color = "#10b981";
+            resultDesc.innerText = "คุณมีความเข้าใจใน Mindset และระบบการทำงานของแอดมินระดับสูงอย่างดีเยี่ยม";
+            resultText = "Advanced Admin (Pass)";
+        } else if (percentage >= 50) {
+            resultMsg.innerText = "ผ่านเกณฑ์ (Standard)";
+            resultMsg.style.color = "#f59e0b";
+            resultDesc.innerText = "คุณเข้าใจพื้นฐานดี แต่อาจต้องทบทวนจุดเล็กๆ น้อยๆ เพื่อลดความเสี่ยงให้ระบบ";
+            resultText = "Standard (Pass)";
+        } else {
+            resultMsg.innerText = "ต้องปรับปรุง (Needs Work)";
+            resultMsg.style.color = "#ef4444";
+            resultDesc.innerText = "แนะนำให้กลับไปอ่านคู่มือและทำความเข้าใจเรื่อง System Selling & Risk Control ใหม่อีกครั้ง";
+            resultText = "Needs Work (Fail)";
+        }
+
+        // Send Data to Google Sheet
+        saveDataToSheet(resultText);
+    }
+
+    // Function to send data to Google Sheet
+    function saveDataToSheet(resultText) {
+        const statusDiv = document.getElementById('save-status');
+        
+        if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("วาง_URL")) {
+            statusDiv.innerText = "⚠️ ไม่ได้เชื่อมต่อ Google Sheet (ข้อมูลแสดงเฉพาะหน้านี้)";
+            return;
+        }
+
+        statusDiv.innerText = "⏳ กำลังบันทึกข้อมูลลงระบบ...";
+        
+        const data = {
+            name: userName,
+            position: userPos,
+            score: `${score} / ${quizData.length}`,
+            resultText: resultText
+        };
+
+        // Using no-cors mode to send data (simplest way for static HTML)
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(() => {
+            // Because of 'no-cors', we won't get a readable response, 
+            // but if it doesn't throw error, we assume sent.
+            statusDiv.innerHTML = "<span style='color:#10b981'>✅ บันทึกข้อมูลสำเร็จ!</span>";
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            statusDiv.innerText = "❌ เกิดข้อผิดพลาดในการบันทึก";
+        });
+    }
+
+</script>
+
+</body>
+</html>
